@@ -1,0 +1,32 @@
+{
+# Global options block. Entirely optional, https is on by default
+
+# Optional email key for lets encrypt
+# email youremail@domain.com 
+
+# Optional staging lets encrypt for testing. Comment out for production.
+acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+
+on_demand_tls {
+  interval 2m
+  burst    5
+  }
+}
+
+{$DOMAIN:https://} {
+   encode zstd gzip
+
+   tls {
+     on_demand
+   }
+   tls internal {
+     on_demand
+   }
+
+   reverse_proxy nightscout:1337
+   log {
+     output stdout
+     format single_field common_log
+   }
+}
+

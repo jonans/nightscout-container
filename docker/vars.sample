@@ -1,0 +1,17 @@
+
+# Set your API secret
+API_SECRET=secretsecret
+
+# Set database password 
+MONGODB_ROOT_PASSWORD=db-password
+MONGODB_URI=mongodb://root:db-password@database/admin
+
+# Set domain name for production. Leave empty for testing.
+DOMAIN=https://
+
+#
+# Set any other nightscout variables 
+# Documented here: https://github.com/nightscout/cgm-remote-monitor#environment
+#
+DISPLAY_UNITS=mg/dl
+

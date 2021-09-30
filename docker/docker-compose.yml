@@ -1,0 +1,45 @@
+---
+version: "3.7"
+
+services:
+   
+  nightscout:
+    image: 'nightscout/cgm-remote-monitor:latest'
+    env_file: ./vars
+    environment:
+      PORT: 1337
+      INSECURE_USE_HTTP: "true" 
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  database:
+    image: 'bitnami/mongodb:latest'
+    env_file: ./vars
+    volumes:
+    - mongodb:/bitnami/mongodb
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  caddy:
+    image: caddy
+    env_file: ./vars
+    ports:
+    - 8080:80
+    - 8443:443
+    command: caddy run --config /etc/caddy/Caddyfile --adapter caddyfile -watch
+    volumes:
+    - $PWD/caddy/config:/config
+    - $PWD/caddy/data:/data
+    - $PWD/caddy/Caddyfile:/etc/caddy/Caddyfile
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  mongodb:
+
